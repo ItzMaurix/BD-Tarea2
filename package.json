@@ -1,5 +1,5 @@
 {
-  "name": "BD-TAREA2-1",
+  "name": "BD-TAREA2-4",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +9,7 @@
     "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest",
-    "prisma": "^5.15.0"
+    "bun-types": "latest"
   },
   "module": "src/index.js"
 }
