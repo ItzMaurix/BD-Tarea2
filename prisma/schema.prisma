@@ -12,49 +12,71 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model Usuario {
-  id                 Int @id @default(autoincrement())
-  direccion_correo   String  @unique
-  nombre             String?
-  clave              String?
-  descripcion        String?
-  fecha_creacion     DateTime @default(now())
+  id                  Int                   @id @default(autoincrement())
+  direccion_correo    String                @unique
+  nombre              String?
+  clave               String?
+  descripcion         String?
+  fecha_creacion      DateTime              @default(now())
+  Correo              Correo?
+  Administrador       Administrador?
+  Correo_destinatario Correo_destinatario[]
+  Correo_favorito     Correo_favorito[]
+  Usuario_bloqueado   Usuario_bloqueado[]
+  Bloqueo             Bloqueo[]
 }
+
 model Correo {
-  id_correo          Int @id @default(autoincrement())
-  usuario            Usuario @relation(fields: [id_remitente], references: [id])
-  id_remitente       Int @unique
-  asunto             String?
-  cuerpo             String?
-  fecha_envio        DateTime @default(now())
+  id_correo           Int                   @id @default(autoincrement())
+  usuario             Usuario               @relation(fields: [id_remitente], references: [id])
+  id_remitente        Int                   @unique
+  asunto              String?
+  cuerpo              String?
+  fecha_envio         DateTime              @default(now())
+  Correo_destinatario Correo_destinatario[]
+  Correo_favorito     Correo_favorito[]
 }
+
 model Administrador {
-  id_admin           Int @id @default(autoincrement())
-  usuario            Usuario @relation(fields: [id_usuario], references: [id])
-  id_usuario         Int @unique
+  id_admin   Int     @id @default(autoincrement())
+  usuario    Usuario @relation(fields: [id_usuario], references: [id])
+  id_usuario Int     @unique
 }
+
 model Correo_destinatario {
-  usuario              Usuario @relation(fields: [id_destinatario], references: [id])
-  id_destinatario      Int
-  correo               Correo @relation(fields: [id_correo_dest], references: [id_correo])
-  id_correo_dest       Int
+  usuario         Usuario @relation(fields: [id_destinatario], references: [id])
+  id_destinatario Int
+  correo          Correo  @relation(fields: [id_correo_dest], references: [id_correo])
+  id_correo_dest  Int
+
   @@id([id_correo_dest, id_destinatario])
 }
 
 model Correo_favorito {
-  usuario              Usuario @relation(fields: [id_usuario], references: [id])
-  id_usuario           Int
-  correo               Correo @relation(fields: [id_correo_favorito], references: [id_correo])
-  id_correo_favorito   Int
-  fecha_agregado       DateTime  @default(now())
+  usuario            Usuario  @relation(fields: [id_usuario], references: [id])
+  id_usuario         Int
+  correo             Correo   @relation(fields: [id_correo_favorito], references: [id_correo])
+  id_correo_favorito Int
+  fecha_agregado     DateTime @default(now())
+
   @@id([id_usuario, id_correo_favorito])
 }
 
 model Usuario_bloqueado {
-  usuario              Usuario @relation(fields: [id_usuario], references: [id])
-  id_usuario           Int
-  usuario_bloqueado    Usuario @relation(fields: [id_usuario_bloqueado], references: [id])
-  id_usuario_bloqueado Int
-  fecha_bloqueo        DateTime  @default(now())
-  @@id([id_usuario, id_usuario_bloqueado])
+  usuario    Usuario @relation(fields: [id_usuario], references: [id])
+  id_usuario Int
+  bloqueo    Bloqueo @relation(fields: [id_bloqueo], references: [id_bloqueo])
+  id_bloqueo Int
+
+  @@id([id_bloqueo, id_usuario])
+}
+
+model Bloqueo {
+  id_bloqueo            Int                 @id @default(autoincrement())
+  usuario               Usuario             @relation(fields: [id_usuario_bloqueador], references: [id])
+  id_usuario_bloqueador Int
+  fecha_bloqueo         DateTime            @default(now())
+  Usuario_bloqueado     Usuario_bloqueado[]
 }
