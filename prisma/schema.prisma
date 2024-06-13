@@ -34,8 +34,22 @@ model Administrador {
   id_usuario         Int @unique
 }
 model Correo_destinatario {
-  id_correo          Int @id
+  usuario              Usuario @relation(fields: [id_destinatario], references: [id])
+  id_destinatario      Int
+  correo               Correo @relation(fields: [id_correo_dest], references: [id_correo])
+  id_correo_dest       Int
+  @@id([id_correo_dest, id_destinatario])
 }
+
+model Correo_favorito {
+  usuario              Usuario @relation(fields: [id_usuario], references: [id])
+  id_usuario           Int
+  correo               Correo @relation(fields: [id_correo_favorito], references: [id_correo])
+  id_correo_favorito   Int
+  fecha_agregado       DateTime  @default(now())
+  @@id([id_usuario, id_correo_favorito])
+}
+
 model Usuario_bloqueado {
   usuario              Usuario @relation(fields: [id_usuario], references: [id])
   id_usuario           Int
