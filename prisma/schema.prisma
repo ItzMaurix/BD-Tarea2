@@ -18,5 +18,29 @@ model Usuario {
   nombre             String?
   clave              String?
   descripcion        String?
-  fecha_creacion     DateTime
+  fecha_creacion     DateTime @default(now())
+}
+model Correo {
+  id_correo          Int @id @default(autoincrement())
+  usuario            Usuario @relation(fields: [id_remitente], references: [id])
+  id_remitente       Int @unique
+  asunto             String?
+  cuerpo             String?
+  fecha_envio        DateTime @default(now())
+}
+model Administrador {
+  id_admin           Int @id @default(autoincrement())
+  usuario            Usuario @relation(fields: [id_usuario], references: [id])
+  id_usuario         Int @unique
+}
+model Correo_destinatario {
+  id_correo          Int @id
+}
+model Usuario_bloqueado {
+  usuario              Usuario @relation(fields: [id_usuario], references: [id])
+  id_usuario           Int
+  usuario_bloqueado    Usuario @relation(fields: [id_usuario_bloqueado], references: [id])
+  id_usuario_bloqueado Int
+  fecha_bloqueo        DateTime  @default(now())
+  @@id([id_usuario, id_usuario_bloqueado])
 }
