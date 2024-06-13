@@ -1,12 +1,11 @@
 {
-  "name": "BD-TAREA2-4",
+  "name": "elysia",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "@prisma/client": "5.15.0",
     "elysia": "latest"
   },
   "devDependencies": {
