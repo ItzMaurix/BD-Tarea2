@@ -17,15 +17,45 @@ def get_informacion():
         return [True, dict_data[0]]
     return [False]
 def register_user(correo, clave):
-    return 1
+    datos = {'_correo':correo,'_clave':clave}
+    consulta = requests.post('http://localhost:3000/api/registrar/', json=datos)
+    json_str = consulta.content.decode('utf-8')
+    dict_data = json.loads(json_str)
+    if len(dict_data) == 1:
+        return [True, dict_data[0]]
+    return [False]
 def block_user(correo, clave, correo_bloquear):
-    return 1
+    datos = {'_correo':correo,'_clave':clave, '_correo_bloquear':correo_bloquear}
+    consulta = requests.post('http://localhost:3000/api/bloquear/', json=datos)
+    json_str = consulta.content.decode('utf-8')
+    dict_data = json.loads(json_str)
+    if len(dict_data) == 1:
+        return [True, dict_data[0]]
+    return [False]
 def set_favorite(correo, clave,  id_correo_favorito):
-    return 1
+    datos = {'_correo':correo,'_clave':clave, '_id_correo_favorito': id_correo_favorito}
+    consulta = requests.post('http://localhost:3000/api/marcarcorreo/', json=datos)
+    json_str = consulta.content.decode('utf-8')
+    dict_data = json.loads(json_str)
+    if len(dict_data) == 1:
+        return [True, dict_data[0]]
+    return [False]
 def delete_favorite(correo, clave, id_correo_favorito):
-    return 1
+    datos = {'_correo':correo,'_clave':clave, '_id_correo_favorito': id_correo_favorito}
+    consulta = requests.post('http://localhost:3000/api/desmarcarcorreo/', json=datos)
+    json_str = consulta.content.decode('utf-8')
+    dict_data = json.loads(json_str)
+    if len(dict_data) == 1:
+        return [True, dict_data[0]]
+    return [False]
 def get_favorite(correo, clave):
-    return 1
+    datos = {'_correo':correo,'_clave':clave}
+    consulta = requests.post('http://localhost:3000/api/vercorreo/', json=datos)
+    json_str = consulta.content.decode('utf-8')
+    dict_data = json.loads(json_str)
+    if len(dict_data) > 0:
+        return [True, dict_data[0]]
+    return [False]
 # ver información del correo y la clave
 busqueda = get_usuario()
 if not busqueda[0]:
@@ -44,8 +74,12 @@ while True:
     print("1. Ver información de una dirección de correo electrónico")
     print("2. Ver correos favoritos")
     print("3. Marcar correo como favorito")
-    print("4. Terminar con la ejecución del cliente")
-    opcion = int(input("Ingrese opción (1-4): "))
+    print("4. Desmarcar correo como favorito")
+    print("5. Crear Usuario")
+    print("6. Bloquear Usuario")
+    print("7. Eliminar usuario")
+    print("8. Terminar con la ejecución del cliente")
+    opcion = int(input("Ingrese opción (1-8): "))
     if opcion == 1:
         respuesta = get_informacion()
         if not respuesta[0]:
@@ -55,15 +89,23 @@ while True:
         print("Descripción: "+respuesta[1]['descripcion'])
     elif opcion == 2:
         print("Aquí está la lista de correos marcados como favorito")
-        get_favorite(correo, clave)
+        print(get_favorite(correo, clave))
     elif opcion == 3:
         solicitud_marcar = int(input("Ingrese id_correo_favorito: "))
         respuesta = set_favorite(correo, clave,  solicitud_marcar)
-        if respuesta["estado"] != 200:
+        if not respuesta[0]:
             break
         print("Marcado como favorito exitosamente")
     elif opcion == 4:
-        break
+        solicitud_desmarcar = 
+        
+    elif opcion == 5:
 
+    elif opcion == 6:
+
+    elif opcion == 7:
+
+    elif opcion == 8:
+        break
 print("Se ha finalizado el programa.")
 exit()
