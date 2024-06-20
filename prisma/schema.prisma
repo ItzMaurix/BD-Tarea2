@@ -1,10 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -21,7 +17,7 @@ model Usuario {
   clave               String?
   descripcion         String?
   fecha_creacion      DateTime              @default(now())
-  Correo              Correo?
+  correosEnviados     Correo[]              
   Correo_destinatario Correo_destinatario[]
   Correo_favorito     Correo_favorito[]
   Usuario_bloqueado   Usuario_bloqueado[]
@@ -30,8 +26,8 @@ model Usuario {
 
 model Correo {
   id_correo           Int                   @id @default(autoincrement())
-  usuario             Usuario               @relation(fields: [id_remitente], references: [id])
-  id_remitente        Int                   @unique
+  remitente           Usuario               @relation(fields: [id_remitente], references: [id])
+  id_remitente        Int                   
   asunto              String?
   cuerpo              String?
   fecha_envio         DateTime              @default(now())
@@ -44,7 +40,6 @@ model Correo_destinatario {
   id_destinatario Int
   correo          Correo  @relation(fields: [id_correo_dest], references: [id_correo])
   id_correo_dest  Int
-
   @@id([id_correo_dest, id_destinatario])
 }
 
@@ -54,7 +49,6 @@ model Correo_favorito {
   correo             Correo   @relation(fields: [id_correo_favorito], references: [id_correo])
   id_correo_favorito Int
   fecha_agregado     DateTime @default(now())
-
   @@id([id_usuario, id_correo_favorito])
 }
 
@@ -63,7 +57,6 @@ model Usuario_bloqueado {
   id_usuario Int
   bloqueo    Bloqueo @relation(fields: [id_bloqueo], references: [id_bloqueo])
   id_bloqueo Int
-
   @@id([id_bloqueo, id_usuario])
 }
 
