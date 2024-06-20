@@ -1,6 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
@@ -21,7 +22,6 @@ model Usuario {
   descripcion         String?
   fecha_creacion      DateTime              @default(now())
   Correo              Correo?
-  Administrador       Administrador?
   Correo_destinatario Correo_destinatario[]
   Correo_favorito     Correo_favorito[]
   Usuario_bloqueado   Usuario_bloqueado[]
@@ -37,12 +37,6 @@ model Correo {
   fecha_envio         DateTime              @default(now())
   Correo_destinatario Correo_destinatario[]
   Correo_favorito     Correo_favorito[]
-}
-
-model Administrador {
-  id_admin   Int     @id @default(autoincrement())
-  usuario    Usuario @relation(fields: [id_usuario], references: [id])
-  id_usuario Int     @unique
 }
 
 model Correo_destinatario {
